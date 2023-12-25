@@ -9,7 +9,7 @@
 		<link rel="icon" type="image/png" href="http://www.jeffreythompson.org/graphics/favicon.png">
 
 		<!-- font and styles -->
-		<link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,400i,700,700i,900" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,400i,700,700i,900" rel="stylesheet">
 		<link href="stylesheet.css" rel="stylesheet" type="text/css">
 
 		<!-- jquery -->
@@ -23,7 +23,7 @@
 
 	<body>
 		<div id="wrapper" class="index">
-			
+
 			<!-- table of contents -->
 			<section id="toc">
 				<h1 id="mainTitle">Recipe Book</h1>
@@ -31,13 +31,13 @@
 
 				<ul> <!-- your recipes will go here --> </ul>
 			</section>
-			
+
 			<!-- footer -->
 			<section id="footer">
 				<ul>
-					<li>A super minimal recipe website by <a href="http://www.jeffreythompson.org">Jeff Thompson</a></li>
-					<li><a href="https://github.com/jeffThompson/Recipes">Source code
-					
+					<li>A collection of useful recipes</li>
+					<li><a href="https://github.com/millii19/recipes">Source code
+
 					<!-- external link icon -->
 					<!-- via: https://fontawesome.com/icons/external-link-alt -->
 					<svg aria-hidden="true" focusable="false" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -54,9 +54,8 @@
 		<?php $files = array_map('basename', glob('recipes/*.md')); ?>
   	let files = <?php echo json_encode($files) ?>;
 	</script>
-	
+
 	<!-- javascript does the rest :) -->
 	<script src="utils.js"></script>
 	<script src="list-recipes.js"></script>
 </html>
-

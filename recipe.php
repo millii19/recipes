@@ -7,9 +7,9 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 		<link rel="icon" type="image/png" href="http://www.jeffreythompson.org/graphics/favicon.png">
-		
+
 		<!-- font and styles -->
-		<link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,400i,700,700i,900,900i" rel="stylesheet"> 
+		<link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,400i,700,700i,900,900i" rel="stylesheet">
 		<link href="stylesheet.css" rel="stylesheet" type="text/css">
 
 		<script>
@@ -22,12 +22,10 @@
 			// label = text displayed
 			// url = template url (put <name> where the search term
 			//       goes, it will be auto-added later)
-			let yelpLocation = 'Bloomfield, NJ';  // no need for fancy formatting, just do it like this
 			let helpUrls = [
 			  { label: 'Image search', url: 'https://www.google.com/search?q=' + '<name>' + '&tbm=isch' },
 			  { label: 'Serious Eats', url: 'https://www.seriouseats.com/search?q=' + '<name>' + '&site=recipes' },
-			  { label: 'More recipes', url: 'https://www.google.com/search?q=' + '<name>' + '+recipe'},
-			  { label: 'Yelp (takeout pls)', url: 'https://www.yelp.com/search?find_loc=' + yelpLocation + '&find_desc=' + '<name>' }
+			  { label: 'More recipes', url: 'https://www.google.com/search?q=' + '<name>' + '+recipe'}
 			];
 
 			// look in a folder called 'images' for an image to display
@@ -63,7 +61,7 @@
 
 	<body>
 		<div id="wrapper" class="recipe">
-			
+
 			<!-- back button -->
 			<!-- icon via: https://fontawesome.com/icons/arrow-left -->
 			<p id="back">
@@ -91,4 +89,3 @@
 	<script src="utils.js"></script>
 	<script src="create-recipe.js"></script>
 </html>
-
