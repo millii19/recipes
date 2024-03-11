@@ -1,12 +1,11 @@
-# WIP: Baking Pan
- Pizza
+# Baking Pan Pizza
 
 ## ingredients
-* 800g wheat flour
+* 600g wheat flour
 * ~100g sourdough starter
-* 560g warm water (70%)
-* 24g fine salt (3%)
-* Some Semola flour for covering the baking pan
+* 420g warm water (70%)
+* 18g fine salt (3%)
+* Some Semola flour for covering the baking pan and shaping
 
 ## steps
 Creating the Dough
@@ -19,13 +18,13 @@ Creating the Dough
 7. Cover the bowl with ceranwrap and place it in the fridge. There it can stay overnight or up to 48h.
 
 Baking
-7. Preheat the oven to 250°C (top&bottom heat). Preferably put a baking stone in the oven and let it heat up for 45 minutes.
-8. Liberally flower the kitchen counter Semola flour and stretch the dough until it more ore less reached the size of the baking sheet
-9. Cover the baking pan with some semola flour and put the dough on top.
-10. Spread the dough by dimpling and pushing down with your fingers to fill out the whole pan.
-11. Add sauce and topping to your liking
-12. Put the pan in the oven and bake for 20-30 minutes
+8. Preheat the oven to 250°C (top&bottom heat). Preferably put a baking stone in the oven and let it heat up for 45 minutes.
+9. Liberally flower the kitchen counter with semola flour and stretch the dough until it more or less reached the size of the baking sheet
+10. Cover the baking pan with some semola flour and put the dough on top.
+11. Spread the dough by dimpling and pushing down with your fingers to fill out the whole pan.
+12. Add sauce and toppings to your liking
+13. Put the pan in the oven and bake for 20-30 minutes
 
 ## notes
 * You can make more dough if you prefer a slightly thicker pizza base. Just add a couple of minutes for baking time and consider turning down the temperature a bit.
-* If the dough does not easily strech or doesn't hold it's form, put it in the baking pan and let it rest for some time to allow it to spread out.
+* If the dough does not easily strech or doesn't hold it's form, put it in the baking pan and let it rest for some time to allow it to spread out before dimpling.

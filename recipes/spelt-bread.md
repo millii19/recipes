@@ -30,3 +30,4 @@ Baking
 ## notes
 * you can add some herbs or seeds to the dough: add them at the same time with the salt and make sure they have soaked a bit in water first
 * instead of a baking stone you can use a dutch oven, just make sure it was sufficiently preheated
+* Spelt bread doesn't hold it's shape so well. If the bread turns out too flat, try reducing the hydration or add some other flower (whole flour, rye flower) that can absorb more water

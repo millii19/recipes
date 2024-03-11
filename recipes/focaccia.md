@@ -1,5 +1,6 @@
 # Focaccia
 * Feeds 8 humans or 6 hungry monsters
+* Amount of dough for a 35cm x 25cm x 7cm (~6L volume) oven dish
 
 ## ingredients
 * 700g white flour
@@ -22,7 +23,7 @@ First Rise
 2. Leave the bowl out in room temperature and cover with some ceran wrap
 
 Second Rise
-1. After about 8-16h (or until the dough doubles), spread some olive oil in a pan
+1. After about 8-16h (or until the dough doubles), spread some olive oil in the oven dish
 2. Fold the dough in the bowl to release some air
 3. Dump the dough into the pan and use your fingers to dimple and spread it
 4. Cover with some ceran wrap again and leave out in room temperature for 4-6h
@@ -35,6 +36,8 @@ Baking
 
 ## notes
 * besides garlic, salt, olive oil and rosemary, you can use some other toppings like: cherry tomatoes, olives
+* instead of ceranwrap, you can use a baking pan or another flat and solid cooking object. The dough won't stick to it as much.
+* You can switch the durations of the first&second rises if it better suits your schedule. i.e.: Let rise for 4h in the bowl in the evening, then transfer to the baking dish overnight
 
 ## based on
 * https://alexandracooks.com/2019/03/22/simple-sourdough-focaccia-a-beginners-guide/

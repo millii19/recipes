@@ -1,4 +1,4 @@
-# WIP: Sunflower Rye Bread
+# Sunflower Rye Bread
 
 ## ingredients
 * 400g wheat flour
@@ -26,7 +26,7 @@ Baking
 8. Preheat the oven to 250°C (top&bottom heat).
 9. Take out the dough, flip it onto a floured baking sheet.
 10. Score the loaf and quickly place in the oven with some water or ice cubes to create some steam.
-14. Bake for 10 minutes, then optionally do an expansion score and turn the oven down to 220°C and bake for another 40 minutes.
+11. Bake for 10 minutes, then optionally do an expansion score and turn the oven down to 220°C and bake for another 40 minutes.
 
 ## notes
 * instead of a baking stone you can use a dutch oven, just make sure it was sufficiently preheated
