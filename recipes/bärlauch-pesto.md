@@ -16,3 +16,6 @@
 ## notes
 * stays good for 2-3 months in the jars
 * once opened, consume quickly
+
+## based on
+* https://www.gutekueche.at/baerlauchpesto-rezept-7431
