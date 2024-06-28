@@ -2,15 +2,15 @@
 
 ## ingredients
 * 280g wheat flour
-* 1tsp baking soda
+* 1tsp baking soda (~6g)
 * 1tsp lemon juice or vinegar
-* 1/2tsp salt
+* 1/2tsp salt (~4g)
 * 115g butter
 * 150g granulated sugar (soft)
 * 2 eggs
 * 2 very ripe bananas (mashed)
-* 1/3 cup milk
-* 1/2 cup walnuts (chopped)
+* 1/3 cup milk (80g)
+* 1/2 cup walnuts (60g, chopped)
 
 ## steps
 1. Mix flour, soda and salt
