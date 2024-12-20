@@ -8,7 +8,7 @@
 * 15g fine salt (3%)
 * 60g sunflower seeds
 * 20g leinsamen (geschrotet)
-* 5g cumin
+* 5g cumin or mixed bread spice
 
 ## steps
 Creating the Dough
@@ -23,10 +23,12 @@ Shaping the Dough
 7. Place it into a banneton with plenty of flour and a linen towel, cover it and place it into the fridge overnight.
 
 Baking
-8. Preheat the oven to 250°C (top&bottom heat).
-9. Take out the dough, flip it onto a floured baking sheet.
-10. Score the loaf and quickly place in the oven with some water or ice cubes to create some steam.
-11. Bake for 10 minutes, then optionally do an expansion score and turn the oven down to 220°C and bake for another 40 minutes.
+8. Preheat the oven to 250°C (top&bottom heat), with a dutch-oven inside.
+9. Take out the dough, flip it onto hot dutch-oven lid.
+10. Score the loaf and quickly, close the dutch oven and place in the oven.
+11. Turn the oven down to 230°C and bake with the lid closed for 20 minutes
+12. Optionally do an expansion score after the first 5-7 minutes.
+13. Take off the lid of the dutch-oven and bake for another 30 minutes.
 
 ## notes
-* instead of a baking stone you can use a dutch oven, just make sure it was sufficiently preheated
+* 

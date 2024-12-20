@@ -12,6 +12,11 @@ Features:
 * To save your place while scrolling up around on the page, click the step you're on to highlight it; click it again to remove the highlight, or use the left/right arrow keys to advance  
 * Easily customized and code is (mostly) really well annotated 🙃  
 
+## Try it out:
+```bash
+docker run --rm -it -p 8080:8080 $(docker build -q .)
+```
+then go to: http://localhost:8080
 
 ## MORE INFO  
 * [Recipe format](#recipe-format)
@@ -23,7 +28,7 @@ Features:
 ## RECIPE FORMAT  
 In order to show up properly, your recipe's Markdown file should be named with dashes in place of spaces (ex: `rice-pilaf.md` or `saag-paneer.md`). This will be used to populate your list of recipes on the main page.
 
-Use `tecipe-template.md` and/or follow this format:
+Use `recipe-template.md` and/or follow this format:
 
 ```markdown
 # TITLE
