@@ -31,7 +31,7 @@ Second Rise
 Baking
 1. Preheat the oven to 250°C (top&bottom heat).
 2. Sprinkle toppings on the focaccia and dimple them in a bit.
-3. Turn the oven down to 220°C and bake for 25 minutes or until golden brown.
+3. Turn the oven down to 220°C and bake for 30-35 minutes or until golden brown.
 4. Take it out afterwards and let it cool a bit in the pan (30 minutes), before slicing
 
 ## notes
