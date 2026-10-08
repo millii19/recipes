@@ -1,3 +1,4 @@
+<?php include 'recipe-data.php'; ?>
 <!doctype html>
 <html profile="http://www.w3.org/2005/10/profile">
 	<head>
@@ -9,14 +10,13 @@
 		<link rel="icon" type="image/png" href="http://www.jeffreythompson.org/graphics/favicon.png">
 
 		<!-- font and styles -->
-		<link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,400i,700,700i,900" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
 		<link href="stylesheet.css" rel="stylesheet" type="text/css">
 
 		<!-- jquery -->
-		<!-- loads the recipes and adds the selected one below -->
 		<script
-			src="https://code.jquery.com/jquery-3.3.1.min.js"
-			integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			src="https://code.jquery.com/jquery-4.0.0.min.js"
+			integrity="sha384-fgGyf7Mo7DURSOMnOy7ed+dkq5Job205Gnzu6QIg0BOHKaqt4D76Dt8VlDCzcMHV"
 			crossorigin="anonymous">
 		</script>
 	</head>
@@ -49,9 +49,8 @@
 		</div>
 	</body>
 
-	<!-- combo php/js to get all recipes in the folder -->
+	<!-- php scans the recipes folder, js builds the list -->
 	<script>
-		<?php $files = array_map('basename', glob('recipes/*.md')); ?>
   	let files = <?php echo json_encode($files) ?>;
 	</script>
 

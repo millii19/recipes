@@ -1,3 +1,4 @@
+<?php include 'recipe-data.php'; ?>
 <!doctype html>
 <html profile="http://www.w3.org/2005/10/profile">
 	<head>
@@ -9,7 +10,7 @@
 		<link rel="icon" type="image/png" href="http://www.jeffreythompson.org/graphics/favicon.png">
 
 		<!-- font and styles -->
-		<link href="https://fonts.googleapis.com/css?family=Fira+Sans:400,400i,700,700i,900,900i" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
 		<link href="stylesheet.css" rel="stylesheet" type="text/css">
 
 		<script>
@@ -48,13 +49,16 @@
 
 		<!-- showdown (markdown parser) -->
 		<!-- https://github.com/showdownjs -->
-		<script src="https://cdn.rawgit.com/showdownjs/showdown/1.9.0/dist/showdown.min.js"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/showdown@2.1.0/dist/showdown.min.js"
+			integrity="sha384-GP2+CwBlakZSDJUr+E4JvbxpM75i1i8+RKkieQxzuyDZLG+5105E1OfHIjzcXyWH"
+			crossorigin="anonymous">
+		</script>
 
 		<!-- jquery -->
-		<!-- loads the recipes and adds the selected one below -->
 		<script
-			src="https://code.jquery.com/jquery-3.3.1.min.js"
-			integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+			src="https://code.jquery.com/jquery-4.0.0.min.js"
+			integrity="sha384-fgGyf7Mo7DURSOMnOy7ed+dkq5Job205Gnzu6QIg0BOHKaqt4D76Dt8VlDCzcMHV"
 			crossorigin="anonymous">
 		</script>
 	</head>
@@ -82,8 +86,17 @@
 			<section id="notes"></section>
 			<section id="help"></section>
 			<section id="basedon"></section>
+			<section id="linked"></section>
+			<section id="backlinks"></section>
 		</div>
 	</body>
+
+	<!-- recipe metadata + link graph (from php) -->
+	<script>
+  	let files = <?php echo json_encode($files) ?>;
+  	let linkGraph = <?php echo json_encode($linkGraph) ?>;
+  	let recipeData = <?php echo json_encode($recipeData) ?>;
+	</script>
 
 	<!-- parses and displays recipe -->
 	<script src="utils.js"></script>

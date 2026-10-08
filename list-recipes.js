@@ -6,20 +6,19 @@ $(document).ready(function() {
   let listOfRecipes = '';
   let listOfLetters = '';
   let prevLetter = '';
-  
+
   // create list of recipes
   for (let i in files) {
     let url = files[i];
-    
+
     // skip files that start with underscore
     // (such as the _template.md file)
     if (url[0] === '_') {
       continue;
     }
 
-    // create anchor and name from url
-    let anchor = url.replace('.md', '');
-    let name = anchor.split('-').join(' ');
+    // recipe name is the filename without the .md extension
+    let name = url.replace(/\.md$/, '');
 
     // if the first letter of the recipe hasn't been
     // seen yet, add to list of letters and put an achor in
@@ -32,7 +31,7 @@ $(document).ready(function() {
       listOfRecipes += '<li>';
     }
 
-    listOfRecipes += '<a href="recipe.php#' + anchor + '">' + name + '</a></li>';
+    listOfRecipes += '<a href="' + recipeLink(name) + '">' + escapeHtml(name) + '</a></li>';
     prevLetter = firstLetter;
   }
 
@@ -42,4 +41,3 @@ $(document).ready(function() {
   // ...and the list of first-letters for quick nav
   $('#navigation').html(listOfLetters);
 });
-

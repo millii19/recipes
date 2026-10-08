@@ -1,19 +1,21 @@
-# TITLE
-Optional subheader
+---
+tags:
+  - 
+type: 
+url: 
+---
 
-## info  
-* About XXX minutes  
-* XXX servings  
+# TITLE
+Optional subheader or short description
 
 ## ingredients
 * 
 
-## steps  
+## steps
 1. 
 
-## notes  
+## notes
 * 
 
-## based on  
+## based on
 * 
-

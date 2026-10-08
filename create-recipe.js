@@ -1,18 +1,23 @@
-
 // once document is loaded, get recipe from file
 $(document).ready(function() {
 
   // create markdown converter
-  let md = new showdown.Converter();
-  
-  // extract which recipe from url anchor
-  let baseFilename = window.location.hash;
-  baseFilename = baseFilename.replace('#', '');
+  let md = new showdown.Converter({ tables: true, strikethrough: true, tasklists: true });
+
+  // extract which recipe from url anchor (names can have spaces/capitals)
+  let baseFilename = decodeURIComponent(window.location.hash.replace(/^#/, ''));
   let filename = 'recipes/' + baseFilename + '.md';
+
+  // metadata + link graph provided by php (see recipe-data.php)
+  let meta = (typeof recipeData !== 'undefined' && recipeData[baseFilename]) ? recipeData[baseFilename] : {};
+  let graph = (typeof linkGraph !== 'undefined' && linkGraph[baseFilename]) ? linkGraph[baseFilename] : { forward: [], backlinks: [] };
+  let recipeNames = (typeof files !== 'undefined' ? files : []).map(function(f) {
+    return f.replace(/\.md$/, '');
+  });
 
   // if there's a hero image available, load and display
   if (lookForHeroImage) {
-    let src = 'images/' + baseFilename + '.jpg';
+    let src = 'images/' + encodeURIComponent(baseFilename) + '.jpg';
     let img = $('<img>').attr('src', src)
       .on('load', function() {
         // if, for various reasons, the image can't be loaded let us know
@@ -30,72 +35,105 @@ $(document).ready(function() {
     url: filename,
     success: function(recipe) {
 
-      // convert markdown to html, split into sections
-      // regex via: https://pineco.de/snippets/split-strings-and-keep-the-delimiter
-      recipe = md.makeHtml(recipe);
-      let sections = recipe.split(/(?=<h)/);
+      // strip yaml frontmatter (metadata comes from php)
+      recipe = recipe.replace(/^\uFEFF/, '');
+      recipe = recipe.replace(/^---[ \t]*\r?\n[\s\S]*?\r?\n---[ \t]*\r?\n?/, '');
+      recipe = recipe.replace(/^[\s\uFEFF]+/, '');
 
-      // iterate sections, add to body
-      let foundTitle = false;
-      for (let i in sections) {
-        let section = sections[i];
+      // normalize headings + pull out intro content
+      let normalized = normalizeBody(recipe);
 
-        // regex to get id from header (auto-added by
-        // the markdown parser)
-        let idPattern = new RegExp('id="(.*?)"');
-        let id = idPattern.exec(section);
+      // turn [[wikilinks]] into normal markdown links
+      let bodyMd = convertWikilinks(normalized.md);
+      let titleExtra = normalized.titleExtra.map(convertWikilinks);
 
-        // remove id from header (for css later)
-        section = section.replace(/\sid=".*?"/, '');
+      // convert markdown to html
+      // (drop auto-generated header ids so they don't clash with section ids)
+      let html = md.makeHtml(bodyMd).replace(/ id="[^"]*"/g, '');
 
-        // if this is the first section...
-        if (!foundTitle) {
-          id = 'title';
-          foundTitle = true;
-
-          // change page title too
-          let elems = $(section);
-          let pageTitle = elems[0].innerHTML + ' | Recipe Book';
-          $(document).prop('title', pageTitle);
+      // sort the top-level elements into sections
+      let buffers = { ingredients: '', steps: '', notes: '', basedon: '', info: '' };
+      let current = null;
+      $('<div>').html(html).children().each(function() {
+        let tag = (this.tagName || '').toLowerCase();
+        if (tag === 'h2') {
+          let key = sectionKey($(this).text());
+          if (key) {
+            current = key;
+            buffers[key] += this.outerHTML;
+            return;
+          }
         }
-        // for all other pages, get id from regex match
-        else {
-          id = id[1];
+        if (current) {
+          buffers[current] += this.outerHTML;
         }
-
-        // make any urls (in sections listed at the top)
-        // that don't have link syntax into valid urls
-        if (autoUrlSections.includes(id)) {
-          section = linkify(section);
-        }
-        
-        // place the html inside its section
-        $('#' + id).html(section);
-      }
-
-      // a few more bits to nicen things up...
-
-      // opt: remove cruft from 'based on' links
-      if (shortenURLs) {
-        $('#basedon a').each( function() {
-          let url = $(this).text();
-          url = getDomain(url);
-          $(this).text(url);
-        });
-      }
-
-      // in the ingredients, make things in parentheses a
-      // bit lighter
-      $('#ingredients li').each( function() {
-        let str = $(this).text();
-        str = str.replace(/\(([^)]+)\)/g, '<span class="paren">($1)</span>');
-        $(this).html(str);
       });
 
-      // in info, add labels to time/quantity
-      let time =  $('#info li:eq(0)');
-      let makes = $('#info li:eq(1)');
-      $('#info ul').html('<li><span id="time">TIME </span>' + time.text() + '</li><li><span id="makes">MAKES </span>' + makes.text() + '</li>');
+      // title + subtitle
+      let title = meta.title || baseFilename;
+      $(document).prop('title', title + ' | Recipe Book');
+      let titleHtml = '<h1>' + escapeHtml(title) + '</h1>';
+      if (titleExtra.length) {
+        titleHtml += md.makeHtml(titleExtra.join('\n\n'));
+      }
+      $('#title').html(titleHtml);
+
+      // info: label time/makes only when there are exactly two bullets
+      let infoHtml = buffers.info;
+      if (infoHtml.trim()) {
+        let $info = $('<div>').html(infoHtml);
+        let $items = $info.find('li');
+        if ($items.length === 2) {
+          let time = $items.eq(0).html();
+          let makes = $items.eq(1).html();
+          $info.html('<ul><li><span id="time">TIME </span>' + time + '</li><li><span id="makes">MAKES </span>' + makes + '</li></ul>');
+        }
+        $('#info').html($info.html());
+      }
+      else {
+        $('#info').hide();
+      }
+
+      // ingredients / steps / notes
+      setSection('#ingredients', buffers.ingredients);
+      setSection('#steps', buffers.steps);
+      setSection('#notes', buffers.notes);
+
+      // in the ingredients, make things in parentheses a bit lighter
+      // (only touches text, so <span data-qty-parse> survives)
+      $('#ingredients li').each( function() {
+        $(this).html(parensToSpans($(this).html()));
+      });
+
+      // based on: merge frontmatter urls with an explicit section
+      // (ignore a section that contains nothing but its heading)
+      let based = buffers.basedon;
+      if (based && !/<(li|p|a)\b/i.test(based)) {
+        based = '';
+      }
+      let urls = [meta.url, meta.url2].filter(function(u) { return u && u.trim(); });
+      if (urls.length) {
+        if (!based.trim()) {
+          based = '<h2>based on</h2>';
+        }
+        based += '<ul>' + urls.map(function(u) { return '<li>' + u + '</li>'; }).join('') + '</ul>';
+      }
+      if (based.trim()) {
+        if (autoUrlSections.includes('basedon')) {
+          based = linkify(based);
+        }
+        if (shortenURLs) {
+          let $based = $('<div>').html(based);
+          $based.find('a').each( function() {
+            $(this).text(getDomain($(this).text()));
+          });
+          based = $based.html();
+        }
+        $('#basedon').html(based);
+      }
+      else {
+        $('#basedon').hide();
+      }
 
       // link icon svg code
       // via: https://fontawesome.com/icons/external-link-alt
@@ -104,8 +142,7 @@ $(document).ready(function() {
       linkIcon += '</svg>';
 
       // add some helper links
-      let recipeName = $('h1').text().toLowerCase();
-      recipeName = recipeName.replace(' ', '+');
+      let recipeName = $('h1').text().toLowerCase().replace(/ /g, '+');
       let help = '<h2>help!</h2>';
       help += '<ul>';
       for (let j in helpUrls) {
@@ -115,6 +152,10 @@ $(document).ready(function() {
       }
       help += '</ul>';
       $('#help').html(help);
+
+      // linked recipes + used in (backlinks)
+      renderLinkCards('#linked', graph.forward, 'linked recipes');
+      renderLinkCards('#backlinks', graph.backlinks, 'used in');
 
       // click a step to highlight it
       $('#steps li').click( function() {
@@ -126,7 +167,7 @@ $(document).ready(function() {
           $(this).addClass('highlight');
         }
       });
-    }, 
+    },
 
     // no recipe listed or some problem?
     // redirect to the main page
@@ -149,14 +190,132 @@ $(document).ready(function() {
         curr.removeClass('highlight');
         curr.next().addClass('highlight');
         break;
-      default: 
+      default:
         return;
     }
-
-    // ignore normal L/R behavior
-    // (probably don't want to do this, since
-    // we want to use L/R for the back button, etc)
-    // e.preventDefault();
   });
-});
 
+
+  // map the many heading names found in obsidian recipes
+  // onto the section ids used by the page
+  function sectionKey(heading) {
+    let h = heading.toLowerCase().replace(/[#*:]/g, '').trim().replace(/\s+/g, ' ');
+    if (/^ingredient/.test(h)) return 'ingredients';
+    if (/^(steps?|directions?|method|instructions?|assembly|preparation)/.test(h)) return 'steps';
+    if (/^notes?/.test(h)) return 'notes';
+    if (/^(based ?on|basedon|source)/.test(h)) return 'basedon';
+    if (/^info/.test(h)) return 'info';
+    return null;
+  }
+
+
+  // split off the intro (before the first heading), collect info bullets,
+  // and force consistent heading levels (first of a kind = h2, rest = h3)
+  function normalizeBody(body) {
+    // drop the title (it is rendered separately)
+    body = body.replace(/^#\s+.+?[ \t]*(?:\r?\n|$)/, '');
+
+    let firstHeading = body.match(/^#{1,6}\s+/m);
+    let intro = firstHeading ? body.slice(0, firstHeading.index) : body;
+    let rest = firstHeading ? body.slice(firstHeading.index) : '';
+
+    let infoLines = [];
+    let titleExtra = [];
+    intro.split(/\r?\n/).forEach(function(line) {
+      let t = line.trim();
+      if (t === '') return;
+      if (/^[*-]\s+/.test(t)) {
+        infoLines.push(t);
+      }
+      else {
+        titleExtra.push(t);
+      }
+    });
+
+    let counts = {};
+    let out = rest.split(/\r?\n/).filter(function(line) {
+      return !/^[-*_]{3,}\s*$/.test(line.trim()); // drop horizontal rules
+    }).map(function(line) {
+      let m = line.match(/^(#{1,6})\s+(.*?)\s*$/);
+      if (!m) return line;
+      let key = sectionKey(m[2]);
+      if (key) {
+        counts[key] = (counts[key] || 0) + 1;
+        return (counts[key] === 1 ? '## ' : '### ') + m[2];
+      }
+      return '### ' + m[2];
+    });
+
+    let outMd = out.join('\n');
+    if (infoLines.length) {
+      outMd = '## info\n' + infoLines.join('\n') + '\n' + outMd;
+    }
+    return { md: outMd, titleExtra: titleExtra };
+  }
+
+
+  // obsidian [[wikilinks]] -> normal markdown links (only for real recipes)
+  function convertWikilinks(text) {
+    return text.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g, function(whole, target, alias) {
+      target = target.trim();
+      let label = (alias ? alias : target).trim();
+      if (recipeNames.indexOf(target) !== -1) {
+        return '[' + label + '](' + recipeLink(target) + ')';
+      }
+      return label;
+    });
+  }
+
+
+  // place html in a section, or hide it when empty
+  function setSection(selector, html) {
+    if (html && html.trim()) {
+      $(selector).html(html);
+    }
+    else {
+      $(selector).hide();
+    }
+  }
+
+
+  // wrap text in parentheses without touching existing html tags
+  function parensToSpans(html) {
+    return html.replace(/(<[^>]+>)|(\([^)]+\))/g, function(whole, tag, paren) {
+      if (tag) return tag;
+      return '<span class="paren">' + paren + '</span>';
+    });
+  }
+
+
+  // small preview cards for linked/backlinked recipes
+  function renderLinkCards(selector, names, heading) {
+    if (!names || !names.length) {
+      $(selector).hide();
+      return;
+    }
+    let html = '<hr /><h2>' + escapeHtml(heading) + '</h2><ul class="recipeCards">';
+    names.forEach(function(name) {
+      let info = (typeof recipeData !== 'undefined' && recipeData[name]) ? recipeData[name] : {};
+      let title = info.title || name;
+      html += '<li class="recipeCard"><a href="' + recipeLink(name) + '">';
+      if (info.thumbnail) {
+        html += '<img class="cardThumb" src="' + escapeHtml(info.thumbnail) + '" alt="" loading="lazy">';
+      }
+      html += '<span class="cardBody">';
+      html += '<span class="cardTitle">' + escapeHtml(title) + '</span>';
+      if (info.snippet) {
+        html += '<span class="cardSnippet">' + escapeHtml(info.snippet) + '</span>';
+      }
+      if (info.tags && info.tags.length) {
+        html += '<span class="cardTags">';
+        info.tags.forEach(function(tag) {
+          html += '<span class="tag">' + escapeHtml(tag) + '</span>';
+        });
+        html += '</span>';
+      }
+      html += '</span></a></li>';
+    });
+    html += '</ul>';
+    $(selector).html(html);
+  }
+});
