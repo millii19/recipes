@@ -6,6 +6,15 @@
 //   $linkGraph  - forward/back link relationships between recipes
 // Included by index.php and recipe.php.
 
+// append the asset's mtime so a new deploy is fetched instead of a stale
+// browser cache (the filenames themselves are not versioned)
+if (!function_exists('recipes_asset')) {
+	function recipes_asset($path) {
+		$full = __DIR__ . '/' . $path;
+		return is_file($full) ? $path . '?v=' . filemtime($full) : $path;
+	}
+}
+
 if (!function_exists('recipes_scan')) {
 
 	// minimal YAML frontmatter parser (scalars + simple lists only)

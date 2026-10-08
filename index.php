@@ -11,7 +11,7 @@
 
 		<!-- font and styles -->
 		<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
-		<link href="stylesheet.css" rel="stylesheet" type="text/css">
+		<link href="<?php echo recipes_asset('stylesheet.css'); ?>" rel="stylesheet" type="text/css">
 
 		<!-- jquery -->
 		<script
@@ -55,6 +55,6 @@
 	</script>
 
 	<!-- javascript does the rest :) -->
-	<script src="utils.js"></script>
-	<script src="list-recipes.js"></script>
+	<script src="<?php echo recipes_asset('utils.js'); ?>"></script>
+	<script src="<?php echo recipes_asset('list-recipes.js'); ?>"></script>
 </html>

@@ -11,7 +11,7 @@
 
 		<!-- font and styles -->
 		<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
-		<link href="stylesheet.css" rel="stylesheet" type="text/css">
+		<link href="<?php echo recipes_asset('stylesheet.css'); ?>" rel="stylesheet" type="text/css">
 
 		<script>
 			// RECIPE OPTIONS
@@ -98,9 +98,9 @@
 	</script>
 
 	<!-- parses and displays recipe -->
-	<script src="parsing.js"></script>
-	<script src="scaling.js"></script>
-	<script src="navigation.js"></script>
-	<script src="utils.js"></script>
-	<script src="create-recipe.js"></script>
+	<script src="<?php echo recipes_asset('parsing.js'); ?>"></script>
+	<script src="<?php echo recipes_asset('scaling.js'); ?>"></script>
+	<script src="<?php echo recipes_asset('navigation.js'); ?>"></script>
+	<script src="<?php echo recipes_asset('utils.js'); ?>"></script>
+	<script src="<?php echo recipes_asset('create-recipe.js'); ?>"></script>
 </html>
