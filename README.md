@@ -8,8 +8,9 @@ Features:
 * Recipes in a simple [Markdown format](https://daringfireball.net/projects/markdown), just dump them in a folder and upload  
 * List of recipes will auto-populate with quick alpha links at the top  
 * Each recipe is displayed in a nice, clean format designed for use while cooking or at the grocery store – no extra 💩 or ads  
-* Auto-generated links to a Google image search for that dish, recipes on Serious Eats and Google, and for restaurants on Yelp (in case you burn something and need takeout fast)  
 * To save your place while scrolling up around on the page, click the step you're on to highlight it; click it again to remove the highlight, or use the left/right arrow keys to advance  
+* Scale a recipe's ingredient amounts with the ½× / 1× / 2× / 3× buttons, or type any factor in the decimal box – the chosen scale carries over when you follow links to other recipes  
+* Click ingredients to cross them off as you go (display only, nothing is saved)  
 * Link recipes to each other with `[[Wikilinks]]`; linked recipes are shown as small preview cards (and each recipe lists the recipes that use it)  
 * Easily customized and code is (mostly) really well annotated 🙃  
 
@@ -142,10 +143,25 @@ You can also include other images in the recipe using Markdown's image syntax: `
 ## OTHER OPTIONS  
 The `recipe.php` file also includes some more options you can customize:
 
-* `helpUrls`: dictionary with the `label` (text displayed) and `url` in template form. The string `<name>` will be replaced with your recipe's name  
 * `lookForHeroImage`: on by default, but you can turn it off if you never intend to include hero images  
 * `autoUrlSections`: list of sections where you want raw URLs (ex: www.instagram.com) to be turned into real links. Great for the `based on` section but not so good if you want to include Markdown-formatted links in other sections  
 * `shortenURLs`: turns a super-long url into just the main domain name (link will still work as normal, just less cluttered). Off by default but exists if you want it
+
+
+## TESTS  
+The parsing, quantity scaling and cross-recipe links are covered by tests:
+
+```bash
+bash tests/run.sh
+```
+
+This runs:
+* `tests/php/test-recipe-data.php` – frontmatter/metadata/link-graph parsing (PHP)
+* `tests/js/parsing.test.js` – heading mapping, frontmatter stripping, wikilinks
+* `tests/js/scaling.test.js` – ingredient quantity scaling
+* `tests/integration/links.test.js` – drives the real page in headless Chrome to verify recipe links, backlinks, the scaler and cross-off
+
+The integration test needs `php` on your `PATH` (or set `PHP_BIN`) and a Chromium/Chrome binary (or set `CHROME_BIN`). CI runs the same script on every push and pull request (see `.github/workflows/tests.yml`).
 
 
 ## SUGGESTIONS WELCOME  

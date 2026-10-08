@@ -89,10 +89,10 @@ ol li {
   margin-left: 1.05em;
 }
 
-#notes ul, #help ul, #basedon ul, #toc ul {
+#notes ul, #basedon ul, #toc ul {
   list-style: square outside;
 }
-#notes ul li, #help ul li, #basedon ul li, #toc ul li {
+#notes ul li, #basedon ul li, #toc ul li {
   margin-left: 1em;
 }
 #notes ul li {
@@ -238,7 +238,7 @@ hr {
     font-size: 1.15em;
   }
 
-  #toc ul, #help ul {
+  #toc ul {
     column-count:       2;
     -webkit-column-gap: 4em;
     -moz-column-gap:    4em;
@@ -269,6 +269,90 @@ hr {
   #steps {
     width: 66%;
   }
+}
+
+/* ingredient quantity scaler */
+.scaleBar {
+  display:     flex;
+  flex-wrap:   wrap;
+  align-items: center;
+  gap:         0.3em;
+  margin-bottom: 0.9em;
+}
+.scaleLabel {
+  margin-right: 0.2em;
+
+  font-size:      0.7em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color:          rgb(150,150,150);
+}
+.scaleBtn {
+  padding: 0.35em 0.6em;
+
+  font:      inherit;
+  font-size: 0.8em;
+  line-height: 1;
+  color:     rgb(60,60,60);
+  cursor:    pointer;
+
+  background:    white;
+  border:        1px solid rgb(210,210,210);
+  border-radius: 999px;
+}
+.scaleBtn:hover {
+  border-color: rgb(120,120,120);
+}
+.scaleBtn.active {
+  color:         white;
+  background:    rgb(40,40,40);
+  border-color:  rgb(40,40,40);
+}
+.scaleCustom {
+  display:     inline-flex;
+  align-items: center;
+  margin-left: 0.15em;
+  padding:     0.25em 0.55em;
+
+  background:    rgb(242,242,242);
+  border-radius: 999px;
+}
+.scaleInput {
+  width:      2.6em;
+  padding:    0;
+  text-align: center;
+
+  font:      inherit;
+  font-size: 0.8em;
+
+  background: transparent;
+  border:     none;
+  outline:    none;
+
+  -moz-appearance: textfield;
+  appearance:      textfield;
+}
+/* hide the number spinner for a cleaner look */
+.scaleInput::-webkit-outer-spin-button,
+.scaleInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.scaleTimes {
+  margin-left: 0.05em;
+
+  font-size: 0.8em;
+  color:     rgb(120,120,120);
+}
+
+/* click an ingredient to cross it off (display only) */
+#ingredients li {
+  cursor: pointer;
+}
+#ingredients li.done,
+#ingredients li.done p {
+  text-decoration: line-through;
+  opacity:         0.5;
 }
 
 /* linked recipes + backlinks previews */
@@ -351,7 +435,7 @@ hr {
   #title {
     text-align: left !important;
   }
-  #back, #help {
+  #back {
     display: none;
   }
 }

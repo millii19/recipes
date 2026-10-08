@@ -19,16 +19,6 @@
 			// (these are mostly things that folks might want to change, but
 			// of course you can customize the code too)
 
-			// help urls to include (will be listed in the order below)
-			// label = text displayed
-			// url = template url (put <name> where the search term
-			//       goes, it will be auto-added later)
-			let helpUrls = [
-			  { label: 'Image search', url: 'https://www.google.com/search?q=' + '<name>' + '&tbm=isch' },
-			  { label: 'Serious Eats', url: 'https://www.seriouseats.com/search?q=' + '<name>' + '&site=recipes' },
-			  { label: 'More recipes', url: 'https://www.google.com/search?q=' + '<name>' + '+recipe'}
-			];
-
 			// look in a folder called 'images' for an image to display
 			// at the top of the recipe?
 			// (must be named the same thing as the recipe and have a .jpg ext)
@@ -84,7 +74,6 @@
 			<section id="steps"></section>
 			<hr />
 			<section id="notes"></section>
-			<section id="help"></section>
 			<section id="basedon"></section>
 			<section id="linked"></section>
 			<section id="backlinks"></section>
@@ -99,6 +88,8 @@
 	</script>
 
 	<!-- parses and displays recipe -->
+	<script src="parsing.js"></script>
+	<script src="scaling.js"></script>
 	<script src="utils.js"></script>
 	<script src="create-recipe.js"></script>
 </html>
