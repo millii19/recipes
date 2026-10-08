@@ -386,9 +386,13 @@ $(document).ready(function() {
       if (info.snippet) {
         html += '<span class="cardSnippet">' + escapeHtml(info.snippet) + '</span>';
       }
-      if (info.tags && info.tags.length) {
+      // the generic "recipe" tag is on nearly everything, so don't show it
+      let tags = (info.tags || []).filter(function(tag) {
+        return String(tag).toLowerCase().trim() !== 'recipe';
+      });
+      if (tags.length) {
         html += '<span class="cardTags">';
-        info.tags.forEach(function(tag) {
+        tags.forEach(function(tag) {
           html += '<span class="tag">' + escapeHtml(tag) + '</span>';
         });
         html += '</span>';
