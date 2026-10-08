@@ -1,0 +1,5 @@
+# Recipes are synced from the Obsidian vault, so ignore them here.
+# Only the example recipe below is tracked in this repo.
+*
+!.gitignore
+!One-Pot Chicken Biryani.md
