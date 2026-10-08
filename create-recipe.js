@@ -12,9 +12,31 @@ $(document).ready(function() {
   // ingredient scale, kept across recipe link clicks (not across reloads)
   let selectedScale = 1;
 
+  // recently visited recipes (in-memory), for back-to-previous navigation
+  let nav = RecipeNav.createNavHistory({ max: 10 });
+
   // which recipe is the url pointing at right now?
   function currentName() {
     return decodeURIComponent(window.location.hash.replace(/^#/, ''));
+  }
+
+  // a recipe link was clicked: remember it, then update the hash
+  function navigateForward(name) {
+    if (!name || name === currentName()) return;
+    nav.visit(name);
+    window.location.hash = name;
+  }
+
+  // go back to the previously visited recipe (or the overview)
+  function goBack() {
+    let previous = nav.back();
+    if (previous) {
+      // replace() keeps our own back from adding browser history entries
+      window.location.replace('#' + encodeURIComponent(previous));
+    }
+    else {
+      window.location.href = 'index.php';
+    }
   }
 
   // load and render the recipe named in the url hash
@@ -167,6 +189,9 @@ $(document).ready(function() {
         renderLinkCards('#linked', graph.forward, 'linked recipes');
         renderLinkCards('#backlinks', graph.backlinks, 'used in');
 
+        // top "back to <previous recipe>" control
+        renderBackControl();
+
         // click a step to highlight it
         $('#steps li').click( function() {
           if ( $(this).hasClass('highlight') ) {
@@ -188,13 +213,43 @@ $(document).ready(function() {
     });
   }
 
-  // navigating between recipes only changes the url hash, so the page must
-  // be re-rendered on hashchange (otherwise the old recipe stays on screen)
+  // recipe links change only the url hash, so re-render on hashchange and
+  // keep the back history in sync (also best-effort for browser back/forward)
   $(window).on('hashchange', function() {
+    let name = currentName();
+    if (name && name !== nav.current()) {
+      if (name === nav.previous()) {
+        nav.back();
+      }
+      else if (name === nav.next()) {
+        nav.forward();
+      }
+      else {
+        nav.visit(name);
+      }
+    }
     window.scrollTo(0, 0);
     loadRecipe();
   });
 
+  // clicking a recipe link counts as forward navigation, even when we have
+  // already visited that recipe (plain hashchange cannot tell that apart from
+  // the browser's back button)
+  $(document).on('click', 'a[href^="recipe.php#"]', function(e) {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || (e.which && e.which !== 1)) return;
+    if ($(this).hasClass('backPrev')) return; // handled below
+    e.preventDefault();
+    let href = this.getAttribute('href') || '';
+    navigateForward(decodeURIComponent(href.split('#')[1] || ''));
+  });
+
+  $('#backPrev').on('click', function(e) {
+    e.preventDefault();
+    goBack();
+  });
+
+  // remember where we start, then render
+  nav.visit(currentName());
   loadRecipe();
 
   // L/R arrow keys shift the step highlight
@@ -214,6 +269,27 @@ $(document).ready(function() {
         return;
     }
   });
+
+
+  // update the top "back to <recipe>" control
+  function renderBackControl() {
+    let $back = $('#backPrev');
+    let previous = nav.previous();
+    if (!previous) {
+      $back.hide();
+      return;
+    }
+    let info = (typeof recipeData !== 'undefined' && recipeData[previous]) ? recipeData[previous] : {};
+    $back.attr('href', recipeLink(previous)).show();
+    $back.find('.backPrevName').text(info.title || previous);
+    let $thumb = $back.find('.backPrevThumb');
+    if (info.thumbnail) {
+      $thumb.attr('src', info.thumbnail).show();
+    }
+    else {
+      $thumb.hide();
+    }
+  }
 
 
   // place html in a section, or hide it when empty

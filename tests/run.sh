@@ -18,5 +18,8 @@ node tests/js/parsing.test.js
 echo "== JS: scaling =="
 node tests/js/scaling.test.js
 
+echo "== JS: navigation =="
+node tests/js/navigation.test.js
+
 echo "== Integration: links + scaler =="
 node tests/integration/links.test.js

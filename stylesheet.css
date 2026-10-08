@@ -161,8 +161,12 @@ a:active, a:hover {
   font-style: italic;
 }
 #back {
+  display:       flex;
+  align-items:   center;
+  gap:           0.5em;
+  min-height:    2em; /* keep spacing steady with or without the back pill */
   margin-top:    -0.6em;
-  margin-bottom: 0.6em;
+  margin-bottom: 0.9em;
   font-style:    normal;
 }
 #title {
@@ -186,12 +190,67 @@ a:active, a:hover {
 #back a:hover {
   background: none;
 }
-#back svg {
-  display: none;
-  width:   24px;
-  color:   rgb(200,200,200);
+
+/* back-to-previous pill */
+.backPrev {
+  display:     inline-flex;
+  align-items: center;
+  gap:         0.4em;
+  min-width:   0;
+  max-width:   60vw;
+  padding:     0.25em 0.7em 0.25em 0.55em;
+
+  color:         rgb(120,120,120);
+  background:    rgb(245,245,245);
+  border-radius: 999px;
 }
-#back svg:hover {
+.backPrev:hover {
+  color:      black;
+  background: rgb(235,235,235);
+}
+.backPrev svg {
+  flex:   0 0 auto;
+  width:  16px;
+  color:  inherit;
+}
+.backPrevThumb {
+  flex:         0 0 auto;
+  width:        24px;
+  height:       24px;
+  object-fit:   cover;
+  border-radius: 4px;
+}
+.backPrevText {
+  display:     inline-flex;
+  align-items: baseline;
+  gap:         0.3em;
+  min-width:   0;
+}
+.backPrevLabel {
+  font-size:      0.68em;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color:          rgb(160,160,160);
+}
+.backPrevName {
+  max-width:     38vw;
+  overflow:      hidden;
+  font-size:     0.85em;
+  font-weight:   700;
+  white-space:   nowrap;
+  text-overflow: ellipsis;
+}
+
+/* home / overview icon */
+.homeLink {
+  display:     inline-flex;
+  align-items: center;
+}
+.homeLink svg {
+  width: 20px;
+  color: rgb(180,180,180);
+}
+.homeLink:hover svg {
   color: black;
 }
 
@@ -247,9 +306,6 @@ hr {
 
   #back {
     margin-bottom: 1.3em;
-  }
-  #back svg {
-    display: block;
   }
   #title {
     text-align:     left;

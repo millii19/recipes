@@ -12,6 +12,7 @@ Features:
 * Scale a recipe's ingredient amounts with the ½× / 1× / 2× / 3× buttons, or type any factor in the decimal box – the chosen scale carries over when you follow links to other recipes  
 * Click ingredients to cross them off as you go (display only, nothing is saved)  
 * Link recipes to each other with `[[Wikilinks]]`; linked recipes are shown as small preview cards (and each recipe lists the recipes that use it)  
+* Follow links between recipes, then step back through your trail with the "back to" button (keeps the last 10 recipes, de-duped so it never loops); a home icon always takes you to the overview  
 * Easily customized and code is (mostly) really well annotated 🙃  
 
 ## Try it out:
@@ -159,7 +160,8 @@ This runs:
 * `tests/php/test-recipe-data.php` – frontmatter/metadata/link-graph parsing (PHP)
 * `tests/js/parsing.test.js` – heading mapping, frontmatter stripping, wikilinks
 * `tests/js/scaling.test.js` – ingredient quantity scaling
-* `tests/integration/links.test.js` – drives the real page in headless Chrome to verify recipe links, backlinks, the scaler and cross-off
+* `tests/js/navigation.test.js` – back-to-previous history (chains, de-dup, the 10-recipe cap)
+* `tests/integration/links.test.js` – drives the real page in headless Chrome to verify recipe links, backlinks, the scaler, cross-off and back navigation
 
 The integration test needs `php` on your `PATH` (or set `PHP_BIN`) and a Chromium/Chrome binary (or set `CHROME_BIN`). CI runs the same script on every push and pull request (see `.github/workflows/tests.yml`).
 

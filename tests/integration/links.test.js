@@ -231,6 +231,51 @@ async function main() {
     // ...but cross-off is display only and resets on navigation
     check(await evaluate("!document.querySelector('#ingredients li').classList.contains('done')"),
       'cross-off is not persisted after navigating away');
+
+    // ------------------------------------------- back to previous recipe
+    // reload for a clean, in-memory history
+    await send('Page.navigate', { url: base + '/recipe.php#' + encodeURIComponent('Link Source') });
+    await waitFor(titleExpr, 'Link Source');
+    await send('Page.reload');
+    await waitFor(titleExpr, 'Link Source');
+    check(await evaluate("document.querySelector('#backPrev').style.display === 'none'"),
+      'back control is hidden when there is no history');
+    const barHeightHidden = await evaluate("document.querySelector('#back').getBoundingClientRect().height");
+
+    // Source -> Target -> Third, watching the back control
+    await evaluate("document.querySelector('#linked a').click()");
+    await waitFor(titleExpr, 'Link Target');
+    check(await evaluate("document.querySelector('.backPrevName').textContent") === 'Link Source',
+      'back control names the previous recipe');
+    const barHeightShown = await evaluate("document.querySelector('#back').getBoundingClientRect().height");
+    check(Math.abs(barHeightHidden - barHeightShown) < 1,
+      'back bar keeps the same height with and without the back button');
+
+    await evaluate("document.querySelector('#linked a').click()");
+    await waitFor(titleExpr, 'Link Third');
+    check(await evaluate("document.querySelector('.backPrevName').textContent") === 'Link Target',
+      'back control follows the chain');
+
+    await evaluate("document.querySelector('#backPrev').click()");
+    await waitFor(titleExpr, 'Link Target');
+    check(await evaluate("document.querySelector('.backPrevName').textContent") === 'Link Source',
+      'back unwinds one step');
+
+    await evaluate("document.querySelector('#backPrev').click()");
+    await waitFor(titleExpr, 'Link Source');
+    check(await evaluate("document.querySelector('#backPrev').style.display === 'none'"),
+      'back control hides once the chain is exhausted');
+
+    // A -> B -> A still offers B: clicking a link to an already-visited
+    // recipe is forward navigation, not a loop back to the overview
+    await send('Page.reload');
+    await waitFor(titleExpr, 'Link Source');
+    await evaluate("document.querySelector('#linked a').click()");     // -> Target
+    await waitFor(titleExpr, 'Link Target');
+    await evaluate("document.querySelector('#backlinks a').click()");  // -> Source
+    await waitFor(titleExpr, 'Link Source');
+    check(await evaluate("document.querySelector('.backPrevName').textContent") === 'Link Target',
+      'A->B->A still offers B as the previous recipe');
   }
   finally {
     try { if (ws) ws.close(); } catch (e) {}
